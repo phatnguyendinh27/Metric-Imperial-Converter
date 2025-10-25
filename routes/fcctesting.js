@@ -60,8 +60,18 @@ module.exports = function (app) {
 
   app.get('/_api/get-tests', cors(), function(req, res, next){
     console.log('requested');
-    if(process.env.NODE_ENV === 'test') return next();
-    res.json({status: 'unavailable'});
+    // If tests haven't been run yet, run them on demand so deployed app can report test results
+    // This allows the testing UI to fetch results even when NODE_ENV is not set to 'test'
+    try {
+      if(!runner.report) {
+        // start tests
+        runner.run();
+      }
+    } catch(e) {
+      console.error('Error starting tests:', e);
+      return res.json({status: 'error'});
+    }
+    return next();
   },
   function(req, res, next){
     if(!runner.report) return next();
