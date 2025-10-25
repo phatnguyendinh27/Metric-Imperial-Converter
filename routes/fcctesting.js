@@ -100,7 +100,9 @@ function testFilter(tests, type, n) {
       out = tests.filter(t => t.context.match('Unit Tests'));
       break;
     case 'functional':
-      out = tests.filter(t => t.context.match('Functional Tests') && !t.title.match('#example'));
+      // Some test suites use 'Routing Tests' as the context for functional tests,
+      // so accept either 'Functional Tests' or 'Routing Tests' here.
+      out = tests.filter(t => (t.context.match('Functional Tests') || t.context.match('Routing Tests')) && !t.title.match('#example'));
       break;
     default:
       out = tests;
