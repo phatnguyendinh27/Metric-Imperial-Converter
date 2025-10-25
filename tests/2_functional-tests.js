@@ -7,8 +7,6 @@ chai.use(chaiHttp);
 
 suite('Functional Tests', function() {
 
-});
-
 	suite('Routing Tests', function() {
 		test('Convert a valid input such as 10L: GET request to /api/convert', function(done) {
 			chai.request(server)
@@ -72,3 +70,5 @@ suite('Functional Tests', function() {
 		});
 
 	});
+
+});
